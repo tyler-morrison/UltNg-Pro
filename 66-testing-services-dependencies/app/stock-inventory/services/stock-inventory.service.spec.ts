@@ -1,31 +1,39 @@
-import { Http, Response, ResponseOptions } from '@angular/http';
 import { TestBed } from '@angular/core/testing';
 import { BrowserDynamicTestingModule, platformBrowserDynamicTesting } from '@angular/platform-browser-dynamic/testing';
 
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/of';
+import {Http, Response, ResponseOptions} from "@angular/http";
+import { Observable } from "rxjs/Observable";
+import "rxjs/add/observable/of";
 
-import { StockInventoryService } from './stock-inventory.service';
+import { StockInventoryService } from "./stock-inventory.service";
+import {Item, Product} from "../models/product.interface";
 
 TestBed.initTestEnvironment(
   BrowserDynamicTestingModule,
   platformBrowserDynamicTesting()
 );
 
-function createResponse(body) {
+const createResponse = (body) => {
   return Observable.of(
-    new Response(new ResponseOptions({ body: JSON.stringify(body) }))
+    new Response( new ResponseOptions({ body: JSON.stringify(body) }))
   );
-}
+};
+
+const cartItems: Item[] = [
+  { product_id: 1, quantity: 10 },
+  { product_id: 2, quantity: 5 }
+];
+
+const productItems: Product[] = [
+  { id: 1, price: 10, name: 'Test' },
+  { id: 2, price: 100, name: 'Another' }
+];
 
 class MockHttp {
   get() {
     return createResponse([]);
   }
 }
-
-const cartItems = [{ product_id: 1, quantity: 10 }, { product_id: 2, quantity: 5 }];
-const productItems = [{ id: 1, price: 10, name: 'Test' }, { id: 2, price: 100, name: 'Another Test' }];
 
 describe('StockInventoryService', () => {
 
@@ -39,6 +47,7 @@ describe('StockInventoryService', () => {
         { provide: Http, useClass: MockHttp }
       ]
     });
+
     http = bed.get(Http);
     service = bed.get(StockInventoryService);
   });

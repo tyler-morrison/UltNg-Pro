@@ -38,9 +38,13 @@ describe('CreditCardDirective', () => {
 
   it('should format the string with spaces', () => {
     const directive = el.query(By.directive(CreditCardDirective)).nativeElement;
+
+    // Test partial input
     directive.value = '475123';
     directive.dispatchEvent(new Event('input'));
     expect(directive.value).toBe('4751 23');
+
+    // Test full CC input
     directive.value = '4751239812019201';
     directive.dispatchEvent(new Event('input'));
     expect(directive.value).toBe('4751 2398 1201 9201');
@@ -48,8 +52,10 @@ describe('CreditCardDirective', () => {
 
   it('should have a max-length of 16 characters', () => {
     const directive = el.query(By.directive(CreditCardDirective)).nativeElement;
-    directive.value = '4751239812019201998394282394823';
+
+    directive.value = '47512398120192013475';
     directive.dispatchEvent(new Event('input'));
+
     expect(directive.value).toBe('4751 2398 1201 9201');
   });
 

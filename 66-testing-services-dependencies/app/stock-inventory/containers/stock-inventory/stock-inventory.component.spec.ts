@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { BrowserDynamicTestingModule, platformBrowserDynamicTesting } from '@angular/platform-browser-dynamic/testing';
-import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
+import {DebugElement, NO_ERRORS_SCHEMA} from '@angular/core';
 
 import { ReactiveFormsModule } from '@angular/forms';
 
@@ -17,10 +17,16 @@ TestBed.initTestEnvironment(
 
 class MockStockInventoryService {
   getProducts() {
-    return Observable.of([{ id: 1, price: 10, name: 'Test' }, { id: 2, price: 100, name: 'Another test'}]);
+    return Observable.of([
+      { id: 1, price: 10, name: 'Test' },
+      { id: 2, price: 100, name: 'Another test'}
+    ]);
   }
   getCartItems() {
-    return Observable.of([{ product_id: 1, quantity: 10 }, { product_id: 2, quantity: 5 }]);
+    return Observable.of([
+      { product_id: 1, quantity: 10 },
+      { product_id: 2, quantity: 5 }
+    ]);
   }
 }
 
@@ -39,10 +45,10 @@ describe('StockInventoryComponent', () => {
       declarations: [
         StockInventoryComponent
       ],
-      schemas: [NO_ERRORS_SCHEMA],
       providers: [
         { provide: StockInventoryService, useClass: MockStockInventoryService }
-      ]
+      ],
+      schemas: [ NO_ERRORS_SCHEMA ]
     });
 
     fixture = TestBed.createComponent(StockInventoryComponent);
@@ -65,16 +71,19 @@ describe('StockInventoryComponent', () => {
     expect(component.productsMap.get(2)).toEqual({ id: 2, price: 100, name: 'Another test' });
   });
 
-  it('should store the products response', () => {
+  it('should store the product response', () => {
     component.ngOnInit();
-    expect(component.products).toEqual([{ id: 1, price: 10, name: 'Test' }, { id: 2, price: 100, name: 'Another test'}]);
+    expect(component.products).toEqual([
+      { id: 1, price: 10, name: 'Test' },
+      { id: 2, price: 100, name: 'Another test'}
+    ])
   });
 
   it('should create a stock item for each cart item', () => {
     spyOn(component, 'addStock');
     component.ngOnInit();
-    expect(component.addStock).toHaveBeenCalledWith({ product_id: 1, quantity: 10 });
-    expect(component.addStock).toHaveBeenCalledWith({ product_id: 2, quantity: 5 });
+    expect(component.addStock).toHaveBeenCalledWith({product_id: 1, quantity: 10});
+    expect(component.addStock).toHaveBeenCalledWith({product_id: 2, quantity: 5});
   });
 
 });
